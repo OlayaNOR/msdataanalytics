@@ -3,20 +3,26 @@ from ..models import Package
 from .. import crud
 from ..utils.charts import generate_chart
 
-router = APIRouter(prefix="/packages", tags=["Packages"])
+router = APIRouter(
+    prefix="/dataanalytics",
+    tags=["DataAnalytics"],  
+)
 
-@router.post("/")
-def add_package(package: Package):
-    crud.insert_package(package.dict())
-    return {"message": "Paquete insertado correctamente"}
-
-@router.get("/stats")
+@router.get(
+    "/stats",
+    summary="Get package statistics",
+    description="Returns a statistical summary of the packages grouped by state.",
+    response_description="Dictionary with package statistics"
+)
 def stats():
-    data = crud.get_packages_grouped()
-    return {"estadisticas": data}
+    return "Packages stats."
 
-@router.get("/chart")
+
+@router.get(
+    "/chart",
+    summary="Get package chart",
+    description="Returns a chart encoded in base64 representing the packages grouped by state.",
+    response_description="Base64 encoded image"
+)
 def chart():
-    data = crud.get_packages_grouped()
-    img_base64 = generate_chart(data)
-    return {"chart_base64": img_base64}
+    return "Packages chart filtered by states."
